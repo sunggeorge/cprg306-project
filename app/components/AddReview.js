@@ -13,7 +13,7 @@ const AddReview = ({ recipeId }) => {
     if (user) {
       await addReview(user.uid, recipeId, { rating, comment });
       setRating(0);
-      setComment("");
+      setComment("");//
     }
   };
 
