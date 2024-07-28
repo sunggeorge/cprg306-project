@@ -1,48 +1,46 @@
 "use client";
+import { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore/lite";
+import { db } from "./_utils/firebase";
+import Head from "next/head";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import RecipeList from "./components/RecipeList";
+import SearchBar from "./components/SearchBar";
 
-// Import the useUserAuth hook
-import { useUserAuth } from "./_utils/auth-context";
-import { useEffect } from "react";
-import { redirect } from 'next/navigation'
+export default function HomePage() {
+  const [recipes, setRecipes] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
 
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      const querySnapshot = await getDocs(collection(db, "recipes"));
+      const recipesData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setRecipes(recipesData);
+    };
 
+    fetchRecipes();
+  }, []);
 
-const Page = () => {
-    const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
-
-    useEffect(() => {
-        if (user) {
-            redirect('/week-10/shopping-list')
-        }
-    }, [user]);
-
-    // if ({user}) {
-    //     redirect('/week-8/shopping-list')
-    // }                 
-
-    return (
-        <>
-            <div>
-                <h1>Week 8</h1>
-                <p>
-                    {user ? (
-                        <button className="border p-2 border-yellow-500" onClick={firebaseSignOut}>Sign Out</button>
-                    ) : (
-                        <button className="border p-2 border-yellow-500" onClick={gitHubSignIn}>Sign In with GitHub</button>
-                    )}
-                </p>
-            </div>
-            <div className="p-5 m-5">
-                <p>{user ? "Hi there!" : "Please sign in with above button!"}</p>
-                {user && user.displayName && (
-                    <p>Welcome, {user.displayName} ({user.email})</p>
-
-                )}
-
-
-            </div>
-        </>
+  const handleSearch = (query) => {
+    const results = recipes.filter((recipe) =>
+      recipe.title.toLowerCase().includes(query.toLowerCase())
     );
-};
+    setSearchResults(results);
+  };
 
-export default Page;
+  return (
+    <div>
+      <Head>
+        <title>SAIT Recipes Platform</title>
+      </Head>
+      <Header />
+      <main className="container mx-auto py-8">
+        <SearchBar onSearch={handleSearch} />
+        <RecipeList recipes={searchResults.length > 0 ? searchResults : recipes} />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
