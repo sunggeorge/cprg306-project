@@ -1,5 +1,5 @@
 import { db } from "../_utils/firebase";
-import { collection, addDoc, updateDoc, doc, arrayUnion } from "from 'firebase/firestore/lite'";
+import { collection, addDoc, updateDoc, doc, arrayUnion } from "firebase/firestore/lite";
 
 export const createUserDocument = async (user) => {
   const userRef = doc(db, "users", user.uid);
