@@ -1,0 +1,24 @@
+/* UserReviews.module.css */
+.userReviews {
+    margin-top: 2rem;
+  }
+  
+  .userReviews h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .userReviews ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .userReviews li {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+  }
+  

@@ -1,0 +1,46 @@
+/* RecipeForm.module.css */
+.recipeForm {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recipeForm label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .recipeForm input,
+  .recipeForm textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .recipeForm button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #4f46e5;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .recipeForm button:hover {
+    background-color: #3730a3;
+  }
+  
+  .recipeForm button:focus {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+  }
+  
