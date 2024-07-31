@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
 import RecipeList from "./RecipeList";
+import styles from './CategoryRecipes.module.css';
 
 const CategoryRecipes = ({ category }) => {
   const [recipes, setRecipes] = useState([]);
@@ -18,8 +19,8 @@ const CategoryRecipes = ({ category }) => {
   }, [category]);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">{category}</h1>
+    <div className={styles.categoryRecipes}>
+      <h1>{category}</h1>
       <RecipeList recipes={recipes} />
     </div>
   );

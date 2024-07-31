@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
+import styles from './ReviewList.module.css';
 
 const ReviewList = ({ recipeId }) => {
   const [reviews, setReviews] = useState([]);
@@ -19,13 +20,13 @@ const ReviewList = ({ recipeId }) => {
   if (!reviews.length) return <div>No reviews yet.</div>;
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Reviews</h2>
+    <div className={styles.reviewList}>
+      <h2>Reviews</h2>
       <ul>
         {reviews.map((review) => (
-          <li key={review.id} className="mb-4">
+          <li key={review.id}>
             <p className="font-bold">{review.rating} stars</p>
-            <p>{review.comment}</p>
+            <p className={styles.reviewComment}>{review.comment}</p>
           </li>
         ))}
       </ul>
