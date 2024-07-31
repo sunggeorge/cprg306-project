@@ -1,0 +1,11 @@
+/* UserRecipes.module.css */
+.userRecipes {
+    margin-top: 2rem;
+  }
+  
+  .userRecipes h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  

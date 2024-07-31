@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
+import styles from './UserReviews.module.css';
 
 const UserReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -36,8 +37,8 @@ const UserReviews = () => {
   if (!reviews.length) return <div>No reviews found.</div>;
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">My Reviews</h1>
+    <div className={styles.userReviews}>
+      <h1>My Reviews</h1>
       <ul>
         {reviews.map(review => (
           <li key={review.id}>{review.content}</li>

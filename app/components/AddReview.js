@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { addReview } from "../_services/reviewService";
+import styles from './AddReview.module.css';
 
 const AddReview = ({ recipeId }) => {
   const [rating, setRating] = useState(0);
@@ -17,32 +18,38 @@ const AddReview = ({ recipeId }) => {
     }
   };
 
+  const handleRatingClick = (value) => {
+    setRating(value);
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className={styles.addReview}>
       <div>
-        <label htmlFor="rating" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="rating" className={styles.label}>
           Rating
         </label>
-        <input
-          type="number"
-          id="rating"
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          min="1"
-          max="5"
-          required
-        />
+        <div className={styles.ratingButtons}>
+          {[1, 2, 3, 4, 5].map((value) => (
+            <button
+              type="button"
+              key={value}
+              className={`${styles.ratingButton} ${rating === value ? styles.selected : ''}`}
+              onClick={() => handleRatingClick(value)}
+            >
+              {value}
+            </button>
+          ))}
+        </div>
       </div>
       <div>
-        <label htmlFor="comment" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="comment" className={styles.label}>
           Comment
         </label>
         <textarea
           id="comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          className={styles.textarea}
           required
         />
       </div>

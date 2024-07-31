@@ -1,0 +1,43 @@
+/* AddReview.module.css */
+.addReview {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .addReview label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .addReview input, .addReview textarea {
+    margin-bottom: 1rem;
+  }
+  
+  .ratingButtons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .ratingButton {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #e0e0e0; /* Better background color */
+    color: #000; /* Black color for the number */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ratingButton:hover {
+    background-color: #d0d0d0;
+  }
+  
+  .ratingButton.selected {
+    background-color: #4f46e5;
+    color: #fff; /* White color for selected number */
+  }
+  
