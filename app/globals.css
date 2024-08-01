@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Additional global styles */
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -74,7 +75,7 @@ button {
 }
 
 button:hover {
-  background-color: #3730a3;
+  background-color: #908ae4;
 }
 
 button:focus {

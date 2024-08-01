@@ -7,7 +7,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import RecipeList from "./components/RecipeList";
 import SearchBar from "./components/SearchBar";
-import styles from './HomePage.module.css';
 
 export default function HomePage() {
   const [recipes, setRecipes] = useState([]);
@@ -31,7 +30,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className={styles.homePage}>
+    <div>
       <Head>
         <title>SAIT Recipes Platform</title>
       </Head>

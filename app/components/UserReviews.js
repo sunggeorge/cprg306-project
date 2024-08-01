@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useUserAuth } from "../_utils/auth-context";
 import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
-import styles from './UserReviews.module.css';
 
 const UserReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -55,12 +54,14 @@ const UserReviews = () => {
   if (!reviews.length) return <div>No reviews found.</div>;
 
   return (
-    <div className={styles.userReviews}>
-      <h1>My Reviews</h1>
-      <ul>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4">My Reviews</h1>
+      <ul className="space-y-4">
         {reviews.map(review => (
           <Link href={`/recipes/id/${review.recipeID}`} >
-          <li key={review.id}><b>{review.rating} stars:</b> {review.comment}<br/>{formatTimestamp(review.createdAt)}</li>
+          <li key={review.id} className="bg-white p-4 rounded shadow">
+            <b>{review.rating} stars:</b> {review.comment}<br/>{formatTimestamp(review.createdAt)}
+          </li>
           </Link>
         ))}
       </ul>

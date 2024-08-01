@@ -4,7 +4,6 @@ import { useUserAuth } from "../_utils/auth-context";
 import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
 import RecipeList from "./RecipeList";
-import styles from './UserRecipes.module.css';
 
 const UserRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -36,8 +35,8 @@ const UserRecipes = () => {
   }, [user]);
 
   return (
-    <div className={styles.userRecipes}>
-      <h1>My Recipes</h1>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4">My Recipes</h1>
       <RecipeList recipes={recipes} />
     </div>
   );
