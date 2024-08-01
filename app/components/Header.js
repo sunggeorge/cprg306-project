@@ -1,10 +1,14 @@
 "use client";
 import Link from "next/link";
+import {useEffect, useState} from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import styles from './Header.module.css';
+import {createUserDocument} from "../_services/userService";
+
 
 const Header = () => {
   const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
+  // console.log(user);
 
   return (
     <header className={styles.header}>
