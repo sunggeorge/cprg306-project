@@ -3,17 +3,25 @@ import { useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { addReview } from "../_services/reviewService";
 
-const AddReview = ({ recipeId }) => {
+const AddReview = ({ recipeId, onNewReview }) => {  // Add onNewReview as a prop
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const { user } = useUserAuth();
+  const [photos, setPhotos] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (user) {
-      await addReview(user.uid, recipeId, { rating, comment });
-      setRating(0);
-      setComment("");
+      try {
+        const newReview = await addReview(user.uid, recipeId, { rating, comment, photos });
+        // Clear the form fields after successful submission
+        setRating(0);
+        setComment("");
+        setPhotos([]);
+        onNewReview(newReview);  // Notify the parent component about the new review
+      } catch (error) {
+        console.error("Error submitting review:", error);
+      }
     }
   };
 
@@ -21,14 +29,15 @@ const AddReview = ({ recipeId }) => {
     setRating(value);
   };
 
+  const handlePhotosChange = (e) => {
+    setPhotos([...e.target.files]);
+  };
+
   return (
     user && (
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label
-            htmlFor="rating"
-            className="block text-2xl font-bold mb-2 text-gray-700 "
-          >
+          <label htmlFor="rating" className="block text-2xl font-bold mb-2 text-gray-700">
             Rating
           </label>
           <div className="grid grid-cols-5 gap-2 mt-2">
@@ -47,10 +56,7 @@ const AddReview = ({ recipeId }) => {
           </div>
         </div>
         <div>
-          <label
-            htmlFor="comment"
-            className="block text-2xl font-bold mb-2 text-gray-700"
-          >
+          <label htmlFor="comment" className="block text-2xl font-bold mb-2 text-gray-700">
             Comment
           </label>
           <textarea
@@ -59,6 +65,18 @@ const AddReview = ({ recipeId }) => {
             onChange={(e) => setComment(e.target.value)}
             className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
             required
+          />
+        </div>
+        <div>
+          <label htmlFor="photos" className="block text-2xl font-bold mb-2 text-gray-700">
+            Photos
+          </label>
+          <input
+            id="photos"
+            type="file"
+            multiple
+            onChange={handlePhotosChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         <button
