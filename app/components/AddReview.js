@@ -23,6 +23,7 @@ const AddReview = ({ recipeId }) => {
   };
 
   return (
+    user &&
     <form onSubmit={handleSubmit} className={styles.addReview}>
       <div>
         <label htmlFor="rating" className={styles.label}>

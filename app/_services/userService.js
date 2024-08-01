@@ -1,12 +1,14 @@
 import { db } from "../_utils/firebase";
-import { collection, addDoc, updateDoc, doc, arrayUnion } from "firebase/firestore/lite";
+import { collection, setDoc, getDoc, updateDoc, doc, arrayUnion } from "firebase/firestore/lite";
 
 export const createUserDocument = async (user) => {
+  console.log('Create user function called');
   const userRef = doc(db, "users", user.uid);
   const userSnap = await getDoc(userRef);
   if (!userSnap.exists()) {
     await setDoc(userRef, {
-      name: user.displayName,
+      name: user.email,
+      email: user.email,
       createdRecipes: [],
       reviewedRecipes: [],
       likedRecipes: []
