@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useUserAuth } from "../_utils/auth-context";
 import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
-import styles from './UserReviews.module.css';
 
 const UserReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -32,10 +31,9 @@ const UserReviews = () => {
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           const userData = userSnap.data();
-          // console.log('User data: ', userData);
           const reviewsData = await Promise.all(
             userData.reviewedRecipes.map(async (reviewId) => {
-              if (reviewId) { // Ensure reviewId is valid
+              if (reviewId) {
                 const reviewRef = doc(db, "reviews", reviewId);
                 const reviewSnap = await getDoc(reviewRef);
                 return { id: reviewSnap.id, ...reviewSnap.data() };
@@ -43,8 +41,7 @@ const UserReviews = () => {
               return null;
             })
           );
-          console.log('User reviews: ', reviewsData);
-          setReviews(reviewsData.filter(review => review !== null)); // Filter out any null values
+          setReviews(reviewsData.filter(review => review !== null));
         }
       };
 
@@ -55,12 +52,12 @@ const UserReviews = () => {
   if (!reviews.length) return <div>No reviews found.</div>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">My Reviews</h1>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4">My Reviews</h1>
       <ul className="space-y-4">
         {reviews.map(review => (
           <li key={review.id} className="border p-4 rounded-lg shadow-sm">
-            <Link href={`/recipes/id/${review.recipeID}`} >
+            <Link href={`/recipes/id/${review.recipeID}`}>
               <a className="text-blue-600 hover:underline">
                 <b>{review.rating} stars:</b> {review.comment}<br />
                 {formatTimestamp(review.createdAt)}

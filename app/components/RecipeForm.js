@@ -1,8 +1,8 @@
+"use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "../_utils/auth-context";
 import { addRecipe, updateRecipe } from "../_services/recipeService";
-import styles from './RecipeForm.module.css';
 
 const RecipeForm = ({ initialData = {} }) => {
   const [title, setTitle] = useState(initialData.title || "");
@@ -29,9 +29,9 @@ const RecipeForm = ({ initialData = {} }) => {
   let isEdit = (initialData == {})? false : true;
 
   return (
-    <form onSubmit={handleSubmit} className={styles.recipeForm}>
+    <form onSubmit={handleSubmit} className="space-y-4 text-black">
       <div>
-        <label htmlFor="title" className={styles.label}>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
           Title
         </label>
         <input
@@ -39,12 +39,12 @@ const RecipeForm = ({ initialData = {} }) => {
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className={styles.input}
+          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           required
         />
       </div>
       <div>
-        <label htmlFor="picture" className={styles.label}>
+        <label htmlFor="picture" className="block text-sm font-medium text-gray-700">
           Picture Link
         </label>
         <input
@@ -52,35 +52,35 @@ const RecipeForm = ({ initialData = {} }) => {
           id="picture"
           value={picture}
           onChange={(e) => setPicture(e.target.value)}
-          className={styles.input}
+          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
         />
       </div>      
       <div>
-        <label htmlFor="ingredients" className={styles.label}>
+        <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700">
           Ingredients
         </label>
         <textarea
           id="ingredients"
           value={ingredients}
           onChange={(e) => setIngredients(e.target.value)}
-          className={styles.textarea}
+          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           required
         />
       </div>
       <div>
-        <label htmlFor="instructions" className={styles.label}>
+        <label htmlFor="instructions" className="block text-sm font-medium text-gray-700">
           Instructions
         </label>
         <textarea
           id="instructions"
           value={instructions}
           onChange={(e) => setInstructions(e.target.value)}
-          className={styles.textarea}
+          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           required
         />
       </div>
       <div>
-        <label htmlFor="category" className={styles.label}>
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
           Category
         </label>
         <input
@@ -88,13 +88,13 @@ const RecipeForm = ({ initialData = {} }) => {
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className={styles.input}
+          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           required
         />
       </div>
       <button
         type="submit"
-        className={styles.button}
+        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
         {isEdit ? "Update Recipe" : "Submit Recipe"}
       </button>

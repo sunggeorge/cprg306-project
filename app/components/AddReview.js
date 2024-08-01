@@ -2,9 +2,8 @@
 import { useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { addReview } from "../_services/reviewService";
-import styles from './AddReview.module.css';
 
-const AddReview = ({ recipeId }) => {
+const AddReview = ({ recipeId, onNewReview }) => {  // Add onNewReview as a prop
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const { user } = useUserAuth();
@@ -19,7 +18,7 @@ const AddReview = ({ recipeId }) => {
         setRating(0);
         setComment("");
         setPhotos([]);
-        onNewReview(newReview);
+        onNewReview(newReview);  // Notify the parent component about the new review
       } catch (error) {
         console.error("Error submitting review:", error);
       }
@@ -31,19 +30,24 @@ const AddReview = ({ recipeId }) => {
   };
 
   const handlePhotosChange = (e) => {
-    setPhotos([...e.target.files]); };
+    setPhotos([...e.target.files]);
+  };
 
-    return (
-      user &&
+  return (
+    user && (
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="rating" className="block font-medium text-gray-700">Rating</label>
-          <div className="flex space-x-2 mt-1">
+          <label htmlFor="rating" className="block text-2xl font-bold mb-2 text-gray-700">
+            Rating
+          </label>
+          <div className="grid grid-cols-5 gap-2 mt-2">
             {[1, 2, 3, 4, 5].map((value) => (
               <button
                 type="button"
                 key={value}
-                className={`px-4 py-2 border rounded-md ${rating === value ? 'bg-yellow-400 border-yellow-400' : 'bg-gray-100 border-gray-300'} focus:outline-none`}
+                className={`border p-2 rounded ${
+                  rating === value ? "bg-indigo-600 text-white" : "bg-gray-200 text-black"
+                }`}
                 onClick={() => handleRatingClick(value)}
               >
                 {value}
@@ -52,17 +56,21 @@ const AddReview = ({ recipeId }) => {
           </div>
         </div>
         <div>
-          <label htmlFor="comment" className="block font-medium text-gray-700">Comment</label>
+          <label htmlFor="comment" className="block text-2xl font-bold mb-2 text-gray-700">
+            Comment
+          </label>
           <textarea
             id="comment"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
             required
           />
         </div>
         <div>
-          <label htmlFor="photos" className="block font-medium text-gray-700">Photos</label>
+          <label htmlFor="photos" className="block text-2xl font-bold mb-2 text-gray-700">
+            Photos
+          </label>
           <input
             id="photos"
             type="file"
@@ -78,7 +86,8 @@ const AddReview = ({ recipeId }) => {
           Submit Review
         </button>
       </form>
-    );
-  };
-  
-  export default AddReview;
+    )
+  );
+};
+
+export default AddReview;

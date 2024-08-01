@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
 import { deleteReview } from "../_services/reviewService";
-import styles from './ReviewList.module.css';
 
-const ReviewList = ({ recipeId }) => {
+const ReviewList = ({ recipeId, onDeleteReview }) => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
@@ -21,7 +20,9 @@ const ReviewList = ({ recipeId }) => {
   const handleDelete = async (reviewId, userId, recipeId, photos) => {
     try {
       await deleteReview(reviewId, userId, recipeId, photos);
+      // Update local state
       setReviews(reviews.filter(review => review.id !== reviewId));
+      // Notify parent component about the deleted review
       onDeleteReview(reviewId);
     } catch (error) {
       console.error("Error deleting review:", error);
@@ -50,7 +51,7 @@ const ReviewList = ({ recipeId }) => {
               </div>
               <button 
                 onClick={() => handleDelete(review.id, review.authorID, review.recipeID, review.photos)}
-                className=" text-black hover:text-red-400 ml-4"
+                className="text-black hover:text-red-400 ml-4"
               >
                 Delete
               </button>
@@ -61,4 +62,5 @@ const ReviewList = ({ recipeId }) => {
     </div>
   );
 };
+
 export default ReviewList;
