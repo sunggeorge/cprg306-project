@@ -1,5 +1,5 @@
 import { db } from "../_utils/firebase";
-import { collection, addDoc, updateDoc, doc, arrayUnion } from "firebase/firestore/lite";
+import { collection, addDoc, updateDoc, doc, arrayUnion, getDocs } from "firebase/firestore/lite";
 
 export const addRecipe = async (userId, recipeData) => {
   const recipesRef = collection(db, "recipes");
@@ -24,4 +24,14 @@ export const updateRecipe = async (recipeId, updatedData) => {
     ...updatedData,
     updatedAt: new Date()
   });
+};
+
+export const getCategories = async () => {
+  const categoriesRef = collection(db, "categories");
+  const categorySnapshot = await getDocs(categoriesRef);
+  const categories = categorySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+  return categories;
 };

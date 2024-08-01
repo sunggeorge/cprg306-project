@@ -53,15 +53,13 @@ const UserReviews = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">My Reviews</h1>
+      <h1 className="text-3xl font-bold mb-4 mt-4">My Reviews</h1>
       <ul className="space-y-4">
         {reviews.map(review => (
           <li key={review.id} className="border p-4 rounded-lg shadow-sm">
-            <Link href={`/recipes/id/${review.recipeID}`}>
-              <a className="text-blue-600 hover:underline">
+            <Link href={`/recipes/id/${review.recipeID}`} className="text-blue-600 hover:underline">
                 <b>{review.rating} stars:</b> {review.comment}<br />
                 {formatTimestamp(review.createdAt)}
-              </a>
             </Link>
             {review.photos && review.photos.length > 0 && (
               <div className="mt-4 flex space-x-2">

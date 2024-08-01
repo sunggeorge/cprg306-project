@@ -26,8 +26,8 @@ const RecipeForm = ({ initialData = {} }) => {
     }
   };
 
-  let isEdit = (initialData == {})? false : true;
-
+  let isEdit = Object.keys(initialData).length !== 0;
+  console.log('initialData:', initialData, initialData == {}, isEdit);
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-black">
       <div>

@@ -6,7 +6,6 @@ import { db } from "../_utils/firebase";
 import AddReview from "./AddReview";
 import ReviewList from "./ReviewList";
 import RecipeList from "./RecipeList";
-import styles from './UserRecipes.module.css';
 
 const UserRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -65,16 +64,9 @@ const UserRecipes = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">My Recipes</h1>
+      <h1 className="text-3xl font-bold mb-4 ">My Recipes</h1>
       <RecipeList recipes={recipes} />
-      {/* Render each recipe and its reviews */}
-      {recipes.map((recipe) => (
-        <div key={recipe.id} className="mb-8">
-          <h2 className="text-xl font-bold mb-2">{recipe.title}</h2>
-          <AddReview recipeId={recipe.id} onNewReview={handleNewReview} />
-          <ReviewList recipeId={recipe.id} reviews={reviews.filter(review => review.recipeID === recipe.id)} onDeleteReview={handleDeleteReview} />
-        </div>
-      ))}
+
     </div>
   );
 };
