@@ -55,13 +55,25 @@ const UserReviews = () => {
   if (!reviews.length) return <div>No reviews found.</div>;
 
   return (
-    <div className={styles.userReviews}>
-      <h1>My Reviews</h1>
-      <ul>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">My Reviews</h1>
+      <ul className="space-y-4">
         {reviews.map(review => (
-          <Link href={`/recipes/id/${review.recipeID}`} >
-          <li key={review.id}><b>{review.rating} stars:</b> {review.comment}<br/>{formatTimestamp(review.createdAt)}</li>
-          </Link>
+          <li key={review.id} className="border p-4 rounded-lg shadow-sm">
+            <Link href={`/recipes/id/${review.recipeID}`} >
+              <a className="text-blue-600 hover:underline">
+                <b>{review.rating} stars:</b> {review.comment}<br />
+                {formatTimestamp(review.createdAt)}
+              </a>
+            </Link>
+            {review.photos && review.photos.length > 0 && (
+              <div className="mt-4 flex space-x-2">
+                {review.photos.map((photo, index) => (
+                  <img key={index} src={photo} alt="Review photo" className="w-24 h-24 object-cover rounded-md border border-gray-300" />
+                ))}
+              </div>
+            )}
+          </li>
         ))}
       </ul>
     </div>
