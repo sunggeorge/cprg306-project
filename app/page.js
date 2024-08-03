@@ -29,6 +29,10 @@ export default function HomePage() {
     setSearchResults(results);
   };
 
+  const clearSearch = () => {
+    setSearchResults([]);
+  };
+
   return (
     <div>
       <Head>
@@ -36,7 +40,7 @@ export default function HomePage() {
       </Head>
       <Header />
       <main className="container mx-auto py-8">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} clearSearch={clearSearch}/>
         <RecipeList recipes={searchResults.length > 0 ? searchResults : recipes} />
       </main>
       <Footer />

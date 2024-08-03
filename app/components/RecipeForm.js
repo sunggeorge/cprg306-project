@@ -1,22 +1,54 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "../_utils/auth-context";
-import { addRecipe, updateRecipe } from "../_services/recipeService";
+import { addRecipe, updateRecipe, getCategories } from "../_services/recipeService";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const RecipeForm = ({ initialData = {} }) => {
   const [title, setTitle] = useState(initialData.title || "");
-  const [ingredients, setIngredients] = useState(initialData.ingredients || []);
+  const [ingredients, setIngredients] = useState(initialData.ingredients || [""]);
   const [instructions, setInstructions] = useState(initialData.instructions || "");
   const [category, setCategory] = useState(initialData.category || "");
-  const [picture, setPicture] = useState(initialData.picture || "");  
+  const [picture, setPicture] = useState(initialData.picture || "");     
   const { user } = useUserAuth();
   const router = useRouter();
+  const [categories, setCategories] = useState([]);
+  const [pictureURL, setPictureURL] = useState([]);
+
+
+  useEffect(() => {
+    async function fetchCategories() {
+      const categoriesData = await getCategories();
+      setCategories(categoriesData);
+    }
+    fetchCategories();
+  }, []);
+
+  const handlePhotosChange = (e) => {
+    setPictureURL([...e.target.files]);
+  };
+
+  const handleIngredientChange = (index, value) => {
+    const newIngredients = [...ingredients];
+    newIngredients[index] = value;
+    setIngredients(newIngredients);
+  };
+
+  const addIngredient = () => {
+    setIngredients([...ingredients, ""]);
+  };
+
+  const removeIngredient = (index) => {
+    const newIngredients = ingredients.filter((_, i) => i !== index);
+    setIngredients(newIngredients);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (user) {
-      const recipeData = { title, ingredients, instructions, category, picture };
+      const recipeData = { title, ingredients, instructions, category, picture, pictureURL };
+      // console.log('recipeData:', pictureURL, recipeData);
       if (isEdit) {
         await updateRecipe(initialData.id, recipeData);
       } else {
@@ -43,29 +75,44 @@ const RecipeForm = ({ initialData = {} }) => {
           required
         />
       </div>
+      {picture && isEdit && (
+        <img src={picture} alt={title} className="mb-4 mx-auto" style={{ height: "600px", width: "auto"}}/>
+      )} 
       <div>
-        <label htmlFor="picture" className="block text-sm font-medium text-gray-700">
-          Picture Link
-        </label>
-        <input
-          type="text"
-          id="picture"
-          value={picture}
-          onChange={(e) => setPicture(e.target.value)}
-          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-        />
-      </div>      
+          <label htmlFor="photos" className="block text-2xl font-bold mb-2 text-gray-700">
+            Photos
+          </label>
+          <input
+            id="photos"
+            type="file"
+            multiple
+            onChange={handlePhotosChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>         
       <div>
         <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700">
           Ingredients
         </label>
-        <textarea
-          id="ingredients"
-          value={ingredients}
-          onChange={(e) => setIngredients(e.target.value)}
-          className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          required
-        />
+        {ingredients.map((ingredient, index) => (
+          <div key={index} className="flex items-center mt-1">
+            <input
+              type="text"
+              value={ingredient}
+              onChange={(e) => handleIngredientChange(index, e.target.value)}
+              className="block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              required
+            />
+            <i
+              className="fas fa-trash-alt ml-2 text-red-500 cursor-pointer"
+              onClick={() => removeIngredient(index)}
+            ></i>
+          </div>
+        ))}
+        <i
+          className="fas fa-plus mt-2 text-blue-500 cursor-pointer"
+          onClick={addIngredient}
+        ></i>
       </div>
       <div>
         <label htmlFor="instructions" className="block text-sm font-medium text-gray-700">
@@ -74,23 +121,31 @@ const RecipeForm = ({ initialData = {} }) => {
         <textarea
           id="instructions"
           value={instructions}
+          style={{ height: "200px" }}
           onChange={(e) => setInstructions(e.target.value)}
           className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          required
-        />
+              required
+            />
       </div>
       <div>
         <label htmlFor="category" className="block text-sm font-medium text-gray-700">
           Category
         </label>
-        <input
-          type="text"
+        <select
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           required
-        />
+          disabled={isEdit}
+        >
+          <option value="" disabled>Select a category</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
       </div>
       <button
         type="submit"

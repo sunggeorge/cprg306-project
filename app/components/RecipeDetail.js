@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
 import ReviewList from "./ReviewList";
 import AddReview from "./AddReview";
+import Link from 'next/link';
 
 const RecipeDetail = ({ recipeId }) => {
   const [recipe, setRecipe] = useState(null);
@@ -35,6 +36,11 @@ const RecipeDetail = ({ recipeId }) => {
           <li key={index}>{ingredient}</li>
         ))}
       </ul>
+      <Link href={`/recipes/edit/${recipe.id}`}
+      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Edit Recipe
+      </Link>
+   
       <ReviewList recipeId={recipe.id} />
       <div className="mt-8">
         <AddReview recipeId={recipe.id} />
