@@ -1,12 +1,17 @@
 "use client";
 import { useState } from "react";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, clearSearch }) => {
   const [query, setQuery] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch(query);
+  };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    clearSearch();
   };
 
   return (
@@ -25,6 +30,12 @@ const SearchBar = ({ onSearch }) => {
       >
         Search
       </button>
+      <button
+        onClick={handleReset}
+        className="inline-flex items-center ml-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Reset
+      </button>      
     </form>
   );
 };

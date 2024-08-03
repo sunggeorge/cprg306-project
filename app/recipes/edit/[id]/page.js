@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from "../../../_utils/firebase";
@@ -8,9 +7,8 @@ import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import RecipeForm from "../../../components/RecipeForm";
 
-const EditRecipePage = () => {
-  const router = useRouter();
-  const { id } = router.query;
+const EditRecipePage = ({params}) => {
+  const id = params.id;
   const [initialData, setInitialData] = useState(null);
 
   useEffect(() => {
@@ -19,7 +17,7 @@ const EditRecipePage = () => {
         const recipeRef = doc(db, "recipes", id);
         const recipeSnap = await getDoc(recipeRef);
         if (recipeSnap.exists()) {
-          setInitialData(recipeSnap.data());
+          setInitialData({"id": id, ...recipeSnap.data()});
         }
       };
 
