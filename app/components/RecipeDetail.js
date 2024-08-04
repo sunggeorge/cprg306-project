@@ -44,6 +44,7 @@ const RecipeDetail = ({ recipeId }) => {
   }, [recipeId]);
 
   const onNewReview = (newReview) => {
+    console.log("New review:", newReview);
     // Update the local state with the new review
     setReviews((prevReviews) => [...prevReviews, newReview]);
   };
