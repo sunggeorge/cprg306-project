@@ -19,7 +19,7 @@ const ProfilePage = () => {
         <h1 className="text-3xl font-bold mb-6">Profile</h1>
         {user ? (
           <div>
-            <h2 className="text-2xl font-bold mb-4">Welcome, {user.displayName}</h2>
+            <h2 className="text-2xl font-bold mb-4">Welcome, {user.email}</h2>
             <UserRecipes />
             <UserReviews />
           </div>

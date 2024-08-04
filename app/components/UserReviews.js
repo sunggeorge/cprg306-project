@@ -9,20 +9,15 @@ const UserReviews = () => {
   const [reviews, setReviews] = useState([]);
   const { user } = useUserAuth();
 
-  function formatTimestamp(timestamp) {
-    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
-  
-    const options = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    };
-  
-    return date.toLocaleString('en-US', options);
-  }
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp.seconds * 1000);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+    const time = date.toLocaleString('en-US', options).replace(',', '');
+    return `${year}-${month}-${day} ${time}`;
+  };
 
   useEffect(() => {
     if (user) {
@@ -41,7 +36,8 @@ const UserReviews = () => {
               return null;
             })
           );
-          setReviews(reviewsData.filter(review => review !== null));
+          const validReviews = reviewsData.filter(review => review !== null)
+          setReviews([...validReviews].sort((a, b) => new Date(b.createdAt.seconds) - new Date(a.createdAt.seconds)));
         }
       };
 
@@ -51,6 +47,7 @@ const UserReviews = () => {
 
   if (!reviews.length) return <div>No reviews found.</div>;
 
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4 mt-4">My Reviews</h1>
@@ -59,7 +56,7 @@ const UserReviews = () => {
           <li key={review.id} className="border p-4 rounded-lg shadow-sm">
             <Link href={`/recipes/id/${review.recipeID}`} className="text-blue-600 hover:underline">
                 <b>{review.rating} stars:</b> {review.comment}<br />
-                {formatTimestamp(review.createdAt)}
+                {formatDate(review.createdAt)}
             </Link>
             {review.photos && review.photos.length > 0 && (
               <div className="mt-4 flex space-x-2">
