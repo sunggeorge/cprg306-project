@@ -5,8 +5,8 @@ import { db } from "../_utils/firebase";
 import { deleteReview } from "../_services/reviewService";
 import { useUserAuth } from "../_utils/auth-context";
 
-const ReviewList = ({ recipeId, onDeleteReview }) => {
-  const [reviews, setReviews] = useState([]);
+const ReviewList = ({reviews, setReviews,recipeId, onDeleteReview }) => {  // the props should be added the reviews and set reviews and add the setReviews to the useEffect.
+  // const [reviews, setReviews] = useState([]);
   const[categories, setCategories] = useState([]);
   const { user } = useUserAuth();
   const [sortedReviews, setSortedReviews] = useState([]);
@@ -20,7 +20,7 @@ const ReviewList = ({ recipeId, onDeleteReview }) => {
     };
 
     fetchReviews();
-  }, [recipeId]);
+  }, [recipeId, setReviews]);
 
   useEffect(() => {
     const sorted = [...reviews].sort((a, b) => new Date(b.createdAt.seconds) - new Date(a.createdAt.seconds));
@@ -28,7 +28,13 @@ const ReviewList = ({ recipeId, onDeleteReview }) => {
   }, [reviews]);
 
   const formatDate = (timestamp) => {
-    const date = new Date(timestamp.seconds * 1000);
+    let date;
+    if (timestamp instanceof Date) {
+      date = timestamp;      
+    } else {
+      date = new Date(timestamp.seconds * 1000);      
+    }
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { addReview } from "../_services/reviewService";
 
-const AddReview = ({ recipeId, onNewReview }) => {  // Add onNewReview as a prop
+const AddReview = ({ recipeId, onNewReview }) => {  
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const { user } = useUserAuth();

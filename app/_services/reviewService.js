@@ -1,3 +1,5 @@
+import { serverTimestamp } from "firebase/firestore";
+// import 'firebase/firestore';
 import { db, storage } from "../_utils/firebase";
 import { collection, addDoc, updateDoc, doc, arrayUnion, getDocs, deleteDoc, arrayRemove } from "firebase/firestore/lite";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
@@ -7,35 +9,50 @@ const uploadFile = async (file) => {
     const storageRef = ref(storage, `photos/${file.name}`);
     await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
-  } catch (error) {
-    console.error("Error uploading file:", error);
+  } catch (error) {console.error("Error uploading file:", error);
     throw new Error("Failed to upload file");
   }
 };
 
 export const addReview = async (userId, recipeId, reviewData) => {
-  const photoURLs = await Promise.all(reviewData.photos.map(file => uploadFile(file)));
-  const reviewsRef = collection(db, "reviews");
-  const newReview = await addDoc(reviewsRef, {
-    recipeID: recipeId,
-    authorID: userId,
-    comment: reviewData.comment,
-    rating: reviewData.rating,
-    createdAt: new Date(),
-    photos: photoURLs
-  });
+  try {
+    // Upload photos and get URLs
+    const photoURLs = await Promise.all(reviewData.photos.map(file => uploadFile(file)));
 
-  const recipeRef = doc(db, "recipes", recipeId);
-  await updateDoc(recipeRef, {
-    reviews: arrayUnion(newReview.id)
-  });
+    // Reference to the reviews collection
+    const reviewsRef = collection(db, "reviews");
 
-  const userRef = doc(db, "users", userId);
-  await updateDoc(userRef, {
-    reviewedRecipes: arrayUnion(newReview.id)
-  });
+    // Add the new review
+    const newReview = await addDoc(reviewsRef, {
+      recipeID: recipeId,
+      authorID: userId,
+      comment: reviewData.comment,
+      rating: reviewData.rating,
+      createdAt: new Date(),
+      photos: photoURLs
+    });
 
+    // Update the recipe with the new review ID
+    const recipeRef = doc(db, "recipes", recipeId);
+    await updateDoc(recipeRef, {
+      reviews: arrayUnion(newReview.id)
+    });
+
+    // Update the user with the new review ID
+    const userRef = doc(db, "users", userId);
+    await updateDoc(userRef, {
+      reviewedRecipes: arrayUnion(newReview.id)
+    });
+
+    // Return the new review with its ID
+    return { id: newReview.id, recipeID: recipeId, authorID: userId, ...reviewData, photos: photoURLs, createdAt: new Date() };
+  } catch (error) {
+    console.error("Error adding review:", error);
+    throw error;
+  }
 };
+
+
 export const getReviews = async () => {
   try {
     const reviewsSnapshot = await getDocs(collection(db, "reviews"));
