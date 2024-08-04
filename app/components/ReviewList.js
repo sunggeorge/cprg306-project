@@ -3,8 +3,8 @@ import { collection, query, where, getDocs } from "firebase/firestore/lite";
 import { db } from "../_utils/firebase";
 import { deleteReview } from "../_services/reviewService";
 
-const ReviewList = ({ recipeId, onDeleteReview }) => {
-  const [reviews, setReviews] = useState([]);
+const ReviewList = ({reviews, setReviews,recipeId, onDeleteReview }) => {  // the props should be added the reviews and set reviews and add the setReviews to the useEffect.
+  // const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -15,7 +15,7 @@ const ReviewList = ({ recipeId, onDeleteReview }) => {
     };
 
     fetchReviews();
-  }, [recipeId]);
+  }, [recipeId, setReviews]);
 
   const handleDelete = async (reviewId, userId, recipeId, photos) => {
     try {
