@@ -11,6 +11,7 @@ const SearchBar = ({ onSearch, clearSearch }) => {
 
   const handleReset = (e) => {
     e.preventDefault();
+    setQuery("");
     clearSearch();
   };
 

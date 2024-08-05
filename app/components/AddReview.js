@@ -4,7 +4,7 @@ import { useUserAuth } from "../_utils/auth-context";
 import { addReview } from "../_services/reviewService";
 
 const AddReview = ({ recipeId, onNewReview }) => {  
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(3);
   const [comment, setComment] = useState("");
   const { user } = useUserAuth();
   const [photos, setPhotos] = useState([]);
@@ -57,7 +57,7 @@ const AddReview = ({ recipeId, onNewReview }) => {
         </div>
         <div>
           <label htmlFor="comment" className="block text-2xl font-bold mb-2 text-gray-700">
-            Comment
+            Comment <span className="text-red-500">*</span>
           </label>
           <textarea
             id="comment"
