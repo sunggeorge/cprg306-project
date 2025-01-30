@@ -13,7 +13,7 @@
     "autoprefixer": "^10.4.19",
     "encoding": "^0.1.13",
     "firebase": "^10.12.5",
-    "next": "14.2.5",
+    "next": "14.2.21",
     "react": "^18",
     "react-dom": "^18"
   },
